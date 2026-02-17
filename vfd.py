@@ -43,9 +43,9 @@ class VariableFrequencyDrive:
         """Вычисляемое свойство: отношение максимальной частоты к минимальной"""
         min_freq, max_freq = self.output_frequency_range
         if min_freq == 0:
-            return float('inf')  # бесконечность, если минимальная частота равна 0
+            return "Ошибка (минимальная частота = 0)"
         return max_freq / min_freq
-    
+
     def info(self):
         min_freq, max_freq = self.output_frequency_range
         return (f"ПЧ {self.__model}: мощность {self.__power} кВт, "
