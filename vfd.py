@@ -47,7 +47,7 @@ class VariableFrequencyDrive:
     
     def __str__(self):
         min_freq, max_freq = self.output_frequency_range
-        return (f"Частотно-регулируемый привод мощностью {self.__power} кВт.")
+        return (f"Частотно-регулируемый привод {self.__model} мощностью {self.__power} кВт. ")
     
     def __lt__(self, other):
         return self.__power < other.__power
@@ -56,25 +56,28 @@ class VariableFrequencyDrive:
         if not isinstance(other, VariableFrequencyDrive):
             raise TypeError(f"Нельзя сложить привод с {type(other).__name__}")
         new_model = f"{self.model} и {other.model}"
-        # Мощность - сумма
         new_power = self.power + other.power
-        # Напряжение - берем макс
         new_voltage = max(self.__input_voltage, other.__input_voltage)
-        # Класс защиты - мин
-        new_protection = max(self.protection_class, other.protection_class)
-        # Частотный диапазон - самый большой
-        new_freq_range = (min(self.output_frequency_range[0], other.output_frequency_range[0]), max(self.output_frequency_range[1], other.output_frequency_range[1]))
+        new_protection = max(self.protection_class, other.protection_class)  # берем МАКС
+        new_freq_range = (
+            min(self.output_frequency_range[0], other.output_frequency_range[0]),
+            max(self.output_frequency_range[1], other.output_frequency_range[1])
+        )
         return VariableFrequencyDrive(new_model, new_power, new_voltage, new_protection, new_freq_range)
 
         
     def __repr__(self):
         min_freq, max_freq = self.output_frequency_range
-        return f"VariableFrequencyDrive('{self.__model}', {self.__power}, {min_freq}, {max_freq}, {self.protection_class})"
+        return f"VariableFrequencyDrive('{self.__model}', {self.__power}, {self.__input_voltage}, '{self.protection_class}', ({min_freq}, {max_freq}))"
     
     def __eq__(self, other):
         if not isinstance(other, VariableFrequencyDrive):
             return False
-        return self.__model == other.__model
+        return (self.__model == other.__model and
+        self.__power == other.__power and
+        self.__input_voltage == other.__input_voltage and
+        self.protection_class == other.protection_class and
+        self.output_frequency_range == other.output_frequency_range)
 
     def info(self):
         min_freq, max_freq = self.output_frequency_range

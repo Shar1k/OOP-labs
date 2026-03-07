@@ -12,7 +12,7 @@ def test_create():
     assert vfd.output_frequency_range == (0, 400)
 
 
-# ТЕСТ 2: Проверка ошибок
+#Проверка ошибок
 def test_errors():
     vfd = VariableFrequencyDrive("VFD-007", 7.5, 380, "54", (0, 400))
     
@@ -40,8 +40,8 @@ def test_speed():
 #Сравнение
 def test_eq():
     vfd1 = VariableFrequencyDrive("VFD-007", 7.5, 380, "54", (0, 400))
-    vfd2 = VariableFrequencyDrive("VFD-007", 15.0, 400, "65", (10, 500)) 
-    vfd3 = VariableFrequencyDrive("VFD-008", 7.5, 380, "54", (0, 400)) 
+    vfd2 = VariableFrequencyDrive("VFD-007", 7.5, 380, "54", (0, 400))
+    vfd3 = VariableFrequencyDrive("VFD-008", 12, 220, "77", (100, 300)) 
     
     assert vfd1 == vfd2      
     assert vfd1 != vfd3      
@@ -52,7 +52,7 @@ def test_lt():
     small = VariableFrequencyDrive("A", 5.0, 380, "54", (0, 400))
     big = VariableFrequencyDrive("B", 10.0, 380, "54", (0, 400))
     
-    assert small < big
+    assert small > big
     assert not (big < small)
     
     list = [big, small]
