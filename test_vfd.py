@@ -111,15 +111,12 @@ def test_generate_test_data_with_params():
         assert drive.protection_class == "54"
         assert drive.output_frequency_range == (0, 100)
 def test_csv_save_load(tmp_path):
-    # Создаем тестовые данные
     original_drives = VariableFrequencyDrive.generate_test_data(5)
     csv_file = tmp_path / "test_drives.csv"
     
-    # Сохраняем
     VariableFrequencyDrive.save_to_csv(str(csv_file), original_drives)
     assert csv_file.exists()
     
-    # Загружаем
     loaded_drives = VariableFrequencyDrive.load_from_csv(str(csv_file))
     assert len(loaded_drives) == 5
     assert loaded_drives[0].model == original_drives[0].model
