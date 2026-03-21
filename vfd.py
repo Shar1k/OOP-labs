@@ -75,14 +75,5 @@ class VariableFrequencyDrive(BaseDevice):
     
     def __lt__(self, other):
         if not isinstance(other, VariableFrequencyDrive):
-            return NotImplemented
-        return self.power < other.power
-    
-    def __eq__(self, other):
-        if not isinstance(other, VariableFrequencyDrive):
             return False
-        return (super().__eq__(other) and
-                abs(self.power - other.power) < 0.001 and
-                self.__input_voltage == other.__input_voltage and
-                self.protection_class == other.protection_class and
-                self.output_frequency_range == other.output_frequency_range)
+        return self.power < other.power
