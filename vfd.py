@@ -1,17 +1,15 @@
 from datetime import datetime
+from baseDevice import BaseDevice
 
-class VariableFrequencyDrive:
-    def __init__(self, model, power, input_voltage, protection_class, frequency_range, timestamp=None):
-        self.__model = model
+class VariableFrequencyDrive(BaseDevice):
+    def __init__(self, model, power, input_voltage, protection_class, 
+                 frequency_range, timestamp=None):
+        super().__init__(model, timestamp)
+        
         self.__power = power
         self.__input_voltage = input_voltage
         self.protection_class = protection_class
         self.output_frequency_range = frequency_range
-        self.timestamp = timestamp or datetime.now()
-    
-    @property
-    def model(self):
-        return self.__model
     
     @property
     def power(self):
@@ -49,21 +47,22 @@ class VariableFrequencyDrive:
         return max_freq / min_freq
     
     def to_dict(self):
+        base_dict = super().to_dict()
         min_freq, max_freq = self.output_frequency_range
-        return {
-            'model': self.model,
+        base_dict.update({
             'power': self.power,
             'input_voltage': self.input_voltage,
             'protection_class': self.protection_class,
             'min_frequency': min_freq,
             'max_frequency': max_freq,
-            'timestamp': self.timestamp.isoformat(),
             'speed_range': self.speed_range
-        }
+        })
+        return base_dict
     
     def info(self):
         min_freq, max_freq = self.output_frequency_range
-        return (f"{self.model}: {self.power} кВт, {self.__input_voltage} В, "
+        base_info = super().info()
+        return (f"{base_info}: {self.power} кВт, {self.__input_voltage} В, "
                 f"{min_freq}-{max_freq} Гц, IP{self.protection_class}")
     
     def __str__(self):
@@ -75,12 +74,14 @@ class VariableFrequencyDrive:
                 f"{self.output_frequency_range})")
     
     def __lt__(self, other):
+        if not isinstance(other, VariableFrequencyDrive):
+            return NotImplemented
         return self.power < other.power
     
     def __eq__(self, other):
         if not isinstance(other, VariableFrequencyDrive):
             return False
-        return (self.model == other.model and
+        return (super().__eq__(other) and
                 abs(self.power - other.power) < 0.001 and
                 self.__input_voltage == other.__input_voltage and
                 self.protection_class == other.protection_class and

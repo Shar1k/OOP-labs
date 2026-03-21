@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import random
 from datetime import datetime
-from vfd import VariableFrequencyDrive
+from fd import VariableFrequencyDrive
 
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -47,7 +47,6 @@ ax2.set_xlabel('Мощность, кВт')
 ax2.set_ylabel('Макс. частота, Гц')
 ax2.set_title('Зависимость частоты от мощности')
 ax2.grid(True, alpha=0.3)
-plt.colorbar(, ax=ax2, label='Напряжение, В')
 
 plt.tight_layout()
 plt.savefig('vfd_chart.png', dpi=150)

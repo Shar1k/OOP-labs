@@ -1,4 +1,4 @@
-from vfd import VariableFrequencyDrive
+from fd import VariableFrequencyDrive
 import generators
 import file_handlers
 

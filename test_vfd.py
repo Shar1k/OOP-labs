@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from vfd import VariableFrequencyDrive
+from fd import VariableFrequencyDrive
 
 def test_create():
     vfd = VariableFrequencyDrive("VFD-007", 7.5, 380, "54", (0, 400))

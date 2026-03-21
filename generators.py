@@ -1,6 +1,6 @@
 import random
 from datetime import datetime, timedelta
-from vfd import VariableFrequencyDrive
+from fd import VariableFrequencyDrive
 
 def from_dict(data):
     timestamp = datetime.fromisoformat(data['timestamp']) if 'timestamp' in data else None
