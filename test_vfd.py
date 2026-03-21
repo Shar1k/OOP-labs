@@ -2,6 +2,9 @@ import pytest
 from datetime import datetime
 from vfd import VariableFrequencyDrive
 from baseDevice import BaseDevice
+import sensor
+from exampleSensors import *
+from main import *
 
 
 class TestVFD:
@@ -81,3 +84,33 @@ class TestInheritance:
         vfd = VariableFrequencyDrive("VFD-007", 7.5, 380, "54", (0, 400))
         data = vfd.to_dict()
         assert 'model' in data
+
+class TestSensor:
+    def test_cant_create_abstract_sensor(self):
+        with pytest.raises(TypeError):
+            s = Sensor()
+    
+    def test_temperature_read_value(self):
+        s = TemperatureSensor(23.5)
+        assert s.read_value() == 23.5
+    
+    def test_pressure_read_value(self):
+        s = PressureSensor(1.2)
+        assert s.read_value() == 1.2
+    
+    def test_flow_read_value(self):
+        s = FlowMeter(150.0)
+        assert s.read_value() == 150.0
+    
+    def test_print_all_sensors(self, capsys):
+        sensors = [
+            TemperatureSensor(23.5),
+            PressureSensor(1.2),
+            FlowMeter(150.0)
+        ]
+        print_all_sensors(sensors)
+        captured = capsys.readouterr()
+        
+        assert "TemperatureSensor (°C): 23.5 °C" in captured.out
+        assert "PressureSensor (bar): 1.2 bar" in captured.out
+        assert "FlowMeter (л/мин): 150.0 л/мин" in captured.out

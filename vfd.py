@@ -59,12 +59,6 @@ class VariableFrequencyDrive(BaseDevice):
         })
         return base_dict
     
-    def info(self):
-        min_freq, max_freq = self.output_frequency_range
-        base_info = super().info()
-        return (f"{base_info}: {self.power} кВт, {self.__input_voltage} В, "
-                f"{min_freq}-{max_freq} Гц, IP{self.protection_class}")
-    
     def __str__(self):
         return f"Привод {self.model} ({self.power} кВт)"
     
