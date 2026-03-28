@@ -22,3 +22,23 @@ class BaseDevice:
             'model': self.model,
             'timestamp': self.timestamp.isoformat()
         }
+    
+    def info(self):
+        return f"{self.model}"
+    
+    def __str__(self):
+        return f"Устройство {self.model}"
+    
+    def __repr__(self):
+        return f"BaseDevice('{self.model}')"
+    
+    def __lt__(self, other):
+        if not isinstance(other, BaseDevice):
+            return NotImplemented
+        return self.model < other.model
+    
+    def __eq__(self, other):
+        if not isinstance(other, BaseDevice):
+            return False
+        return (type(self) == type(other) and 
+                self.model == other.model)

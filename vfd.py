@@ -1,4 +1,3 @@
-from datetime import datetime
 from baseDevice import BaseDevice
 
 class VariableFrequencyDrive(BaseDevice):
@@ -59,6 +58,18 @@ class VariableFrequencyDrive(BaseDevice):
         })
         return base_dict
     
+    def info(self):
+        min_freq, max_freq = self.output_frequency_range
+        base_info = super().info()
+        return (f"{base_info}: {self.power} кВт, {self.__input_voltage} В, "
+                f"{min_freq}-{max_freq} Гц, IP{self.protection_class}")
+    
+    def start(self):
+        return f"Привод {self.model} запущен"
+    
+    def stop(self):
+        return f"Привод {self.model} остановлен"
+    
     def __str__(self):
         return f"Привод {self.model} ({self.power} кВт)"
     
@@ -69,5 +80,14 @@ class VariableFrequencyDrive(BaseDevice):
     
     def __lt__(self, other):
         if not isinstance(other, VariableFrequencyDrive):
-            return False
+            return NotImplemented
         return self.power < other.power
+    
+    def __eq__(self, other):
+        if not isinstance(other, VariableFrequencyDrive):
+            return False
+        return (super().__eq__(other) and
+                abs(self.power - other.power) < 0.001 and
+                self.__input_voltage == other.__input_voltage and
+                self.protection_class == other.protection_class and
+                self.output_frequency_range == other.output_frequency_range)
